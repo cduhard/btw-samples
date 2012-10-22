@@ -295,6 +295,7 @@ namespace E004_event_sourcing_basics
             }
 
             Print("\r\nIt seems, this was an interesting day!  Two Yoda's there should be not!");
+            Console.ReadLine();
         }
 
         static void Print(string format, params object[] args)

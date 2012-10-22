@@ -86,6 +86,7 @@ namespace E002
             var queue = new Queue<object>();
             queue.Enqueue(new AddProductToBasketMessage("Chablis wine", 1));
             queue.Enqueue(new AddProductToBasketMessage("shrimps", 10));
+            queue.Enqueue(new RemoveProductFromBasketMessage("shrimps"));
 
             // display each to message on the console
             foreach (var enqueuedMessage in queue)
@@ -216,6 +217,7 @@ namespace E002
 
             NB: Don't hesitate to ask questions, if you get any.
             ");
+            Console.ReadLine();
         }
 
         static void ApplyMessage(ProductBasket basket, object message)
@@ -281,11 +283,38 @@ namespace E002
                 AddProduct(toBasketMessage.Name, toBasketMessage.Quantity);
             }
 
+            public void When(RemoveProductFromBasketMessage fromBasketMessage)
+            {
+                Console.Write("[Message Applied]: ");
+                RemoveProduct(fromBasketMessage.Name);
+            }
+
+            private void RemoveProduct(string name)
+            {
+                _products.Remove(name);
+                Console.WriteLine("Shopping Basket said: I removed {0} ", name);
+            }
+
             public IDictionary<string, double> GetProductTotals()
             {
                 return _products;
             } 
         }
+        [Serializable]
+        public class RemoveProductFromBasketMessage
+        {
+            public readonly string Name;
+
+            public RemoveProductFromBasketMessage(string name)
+            {
+                Name = name;
+            }
+            public override string ToString()
+            {
+                return string.Format("Remove {0} from basket", Name);
+            }
+        }
+
         [Serializable]
         public class AddProductToBasketMessage
         {
